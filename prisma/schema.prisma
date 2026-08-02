@@ -88,6 +88,8 @@ model AppGrant {
   userId     String
   clientId   String // noco-ai-desktop | noco-search | noco-ios | noco-os
   scopes     String   @default("profile,usage")
+  lanUrl     String?
+  meta       String   @default("{}")
   lastSeenAt DateTime @default(now())
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)

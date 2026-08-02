@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NOCO — Private Cloud</title>
+  <link rel="canonical" href="https://noco-os-developer-team.github.io/NOCO-ID/" />
+  <meta name="description" content="NOCO — lokales Cloud-Ökosystem: Account, KI, Browser und Geräte." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="nav">
+      <a class="brand" href="./">NOCO<span> ID</span></a>
+      <nav class="nav-links">
+        <a href="https://github.com/NOCO-OS-DEVELOPER-TEAM">GitHub</a>
+        <a href="https://github.com/NOCO-OS-DEVELOPER-TEAM/NOCO-ID">NOCO-ID Repo</a>
+        <a href="https://github.com/NOCO-OS-DEVELOPER-TEAM/NOCO-AI">NOCO AI</a>
+        <button id="btn-rediscover" type="button" class="btn">Neu scannen</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Öffentliche Landing · lokale Cloud privat auf deinem PC</p>
+      <h1>NOCO</h1>
+      <p class="lead">Account, KI, Browser und Geräte — ein Ökosystem. Diese Seite findet deine lokale NOCO-Cloud im WLAN und verbindet dich mit Hub &amp; Companion.</p>
+      <div class="cta-row" id="primary-actions">
+        <a id="btn-open-cloud" class="btn btn-primary is-disabled" href="#" aria-disabled="true">Cloud öffnen</a>
+        <a id="btn-open-hub" class="btn" href="#" aria-disabled="true">Hub</a>
+        <a class="btn" href="https://github.com/NOCO-OS-DEVELOPER-TEAM/NOCO-AI" target="_blank" rel="noreferrer">NOCO AI</a>
+      </div>
+      <p class="muted small" id="public-url">Öffentliche URL: https://noco-os-developer-team.github.io/NOCO-ID/</p>
+    </section>
+
+    <section class="grid-2">
+      <article class="card">
+        <h2>Status</h2>
+        <ul class="service-list" id="probe-list">
+          <li><strong>Scanne…</strong><span>127.0.0.1 · LAN</span></li>
+        </ul>
+        <label class="field">Zusätzliche LAN-IP
+          <input id="lan-host" placeholder="192.168.x.x" />
+        </label>
+        <button id="btn-save-host" type="button" class="btn">Host speichern &amp; scannen</button>
+      </article>
+      <article class="card">
+        <h2>Ökosystem</h2>
+        <ul class="service-list">
+          <li><strong>NOCO ID</strong><span>Account · Limits · Geräte · :3000</span></li>
+          <li><strong>NOCO AI</strong><span>Windows · Companion :4747 · lokale Modelle</span></li>
+          <li><strong>NOCO Search</strong><span>Browser-Agent · Chat · Cloud-Login</span></li>
+          <li><strong>NOCO Mobile</strong><span>iPhone Companion</span></li>
+        </ul>
+        <p class="muted small" id="hint">Melde dich in der Cloud mit E-Mail + Passwort an, um Limits und Geräte live zu sehen.</p>
+      </article>
+    </section>
+  </div>
+  <script src="./discover.js"></script>
+</body>
+</html>

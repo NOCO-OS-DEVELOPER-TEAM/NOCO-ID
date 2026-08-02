@@ -20,11 +20,15 @@ npm run dev
 3. **Account** → Premium (kostenlos/simuliert)  
 4. **Geräte** → Code aus NOCO AI X bestätigen  
 
-## Stack
+## Drei Schichten (Cloud-Gefühl)
 
-- Next.js 15 (App Router) + TypeScript  
-- Prisma + SQLite (lokal, Datei `prisma/dev.db`)  
-- Session-Cookie + Bearer Token für Apps  
+| Schicht | Was | Wo |
+|---------|-----|-----|
+| **GitHub Pages** | Öffentliche Landing + Auto-Discover der lokalen Dienste | Ordner `pages-site/` |
+| **NOCO ID (:3000)** | Account-Cloud: Login, Hub, Limits, Geräte, Mail | dieses Repo (`npm run dev`) |
+| **Companion (:4747)** | NOCO AI Desktop — Chat, Vision, Browser-Agent-Plan | Windows NOCO AI |
+
+Pages findet `127.0.0.1` (und gespeicherte LAN-IPs). Die echte Account-API läuft lokal (oder später auf Vercel).
 
 ## API (`/api/v1`)
 
@@ -36,9 +40,11 @@ npm run dev
 | `POST /auth/logout` | Logout |
 | `GET /me` | Profil + Wallet |
 | `PATCH /me/profile` | Profil bearbeiten |
-| `GET /me/live` | Live-Snapshot (Hub/Desktop pollt) |
+| `GET /me/live` | Live-Snapshot inkl. `services[]` + Cloud-Probes |
 | `GET/POST /me/usage` | Limits lesen / Verbrauch melden |
 | `POST /me/premium` | Premium an/aus (simuliert) |
+| `POST /devices/heartbeat` | Geräte-Präsenz (client_id, lan_url) |
+| `GET /cloud/status` | Öffentlicher LAN-Status (Companion + ID) |
 | `GET /mail` | NOCO Mail |
 | `POST /oauth/device/code` | Device-Flow starten |
 | `POST /oauth/device/token` | Token pollen |
@@ -52,8 +58,19 @@ npm run dev
 3. Server: `http://127.0.0.1:3000`  
 4. Login oder Geräte-Code  
 5. Chat/Bilder melden Verbrauch → Hub zeigt Limits live  
+6. Heartbeat meldet Companion-URL → Hub zeigt „online“
 
-## Vercel Deploy (öffentlich)
+## GitHub Pages
+
+**Öffentliche URL:** https://noco-os-developer-team.github.io/NOCO-ID/
+
+1. Repo Settings → Pages → Source: **GitHub Actions**  
+2. Workflow `.github/workflows/pages.yml` deployt `pages-site/`  
+3. Landing scannt lokale Cloud und verlinkt Login/Hub  
+
+Diese URL ist die öffentliche Einstiegsseite. Account-API bleibt lokal auf `:3000` (oder später Vercel).
+
+## Vercel Deploy (öffentliche Account-API, später)
 
 1. Repo: `NOCO-OS-DEVELOPER-TEAM/NOCO-ID`  
 2. Vercel → Import GitHub Repo  
@@ -73,10 +90,10 @@ Bis Neon angebunden ist, läuft alles stabil lokal mit SQLite.
 
 ## Ökosystem-Bereiche (Website)
 
-- **NOCO AI** — zentrale KI (Desktop)  
+- **NOCO AI** — zentrale KI (Desktop + Companion)  
 - **NOCO Lens** — Vision (Architektur, Integration folgt)  
 - **NOCO Memory** — Account-/Nutzungsdaten  
-- **NOCO Search** — Browser-Hub (folgt)  
+- **NOCO Search** — Browser mit Agent (Ausführen / Chat)  
 
 ## Premium
 
