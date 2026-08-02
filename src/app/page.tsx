@@ -48,6 +48,14 @@ export default function HomePage() {
           <Link href="/dashboard" className="btn btn-ghost">
             Zum Hub
           </Link>
+          <a
+            className="btn btn-ghost"
+            href="https://noco-os-developer-team.github.io/NOCO-ID/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Öffentliche Seite
+          </a>
         </div>
       </section>
 
