@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  displayName     String
+  birthDate       String
+  avatarColor     String    @default("#1a6b5c")
+  plan            String    @default("free") // free | premium
+  emailVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  codes     VerificationCode[]
+  sessions  Session[]
+  wallet    TokenWallet?
+  usage     UsageLedger[]
+  devices   AppGrant[]
+  inbox     InboxMessage[]
+  deviceCodes DeviceCode[]
+}
+
+model VerificationCode {
+  id        String    @id @default(cuid())
+  userId    String
+  code      String
+  purpose   String // signup | login | email_change
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  tokenHash  String   @unique
+  deviceName String   @default("Web")
+  appId      String   @default("noco-id-web")
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model TokenWallet {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  dailyTokens   Int      @default(50)
+  dailyUsed     Int      @default(0)
+  dailyResetAt  DateTime @default(now())
+  imageCredits  Int      @default(10)
+  imageUsed     Int      @default(0)
+  visionCredits Int      @default(20)
+  visionUsed    Int      @default(0)
+  codeCredits   Int      @default(30)
+  codeUsed      Int      @default(0)
+  searchCredits Int      @default(100)
+  searchUsed    Int      @default(0)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UsageLedger {
+  id        String   @id @default(cuid())
+  userId    String
+  service   String // chat | image | vision | code | search
+  amount    Int      @default(1)
+  meta      String   @default("{}")
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model AppGrant {
+  id         String   @id @default(cuid())
+  userId     String
+  clientId   String // noco-ai-desktop | noco-search | noco-ios | noco-os
+  scopes     String   @default("profile,usage")
+  lastSeenAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientId])
+}
+
+model InboxMessage {
+  id        String    @id @default(cuid())
+  userId    String
+  subject   String
+  body      String
+  kind      String    @default("system") // verification | system
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model DeviceCode {
+  id           String    @id @default(cuid())
+  userId       String?
+  clientId     String
+  deviceCode   String    @unique
+  userCode     String    @unique
+  intervalSec  Int       @default(5)
+  expiresAt    DateTime
+  approvedAt   DateTime?
+  accessToken  String?
+  createdAt    DateTime  @default(now())
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userCode])
+}
